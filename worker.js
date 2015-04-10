@@ -3,7 +3,8 @@ else postMessage(["using","xhr"]);
 
 var Handlers = {
 	fetchKAML:function(n){
-		fetch("badfile.x").then(function(r){
+		fetch("_pages/"+n+".kaml").then(function(r){
+			postMessage(r.ok?["fetchKAML",parseKAML(r.text()),null]:["fetchKAML",null,"Not OK"]);
 		});
 	},
 	xhrKAML:function(n){
