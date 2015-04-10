@@ -4,11 +4,22 @@ else postMessage(["using","xhr"]);
 var Handlers = {
 	fetchKAML:function(n){
 		fetch("pages/"+n+".kaml").then(function(r){
-			postMessage(r.ok?["fetchKAML",parseKAML(r.text()),null]:["fetchKAML",null,"Not OK"]);
+			if(!r.ok) return postMessage(["fetchKAML",null,"Not OK"]);
+			else r.text().then(function(t){
+				postMessage(["fetchKAML",parseKAML(t),null]);
+			});
 		});
 	},
 	xhrKAML:function(n){
 
+	},
+	fetchHTML:function(n){
+		fetch("pages/"+n+".html").then(function(r){
+			if(!r.ok) return postMessage(["fetchHTML",null,"Not OK"]);
+			else r.text().then(function(t){
+				postMessage(["fetchHTML",t,null]);
+			});
+		});
 	}
 }
 Handlers.fetchKAML();
