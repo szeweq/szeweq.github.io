@@ -40,7 +40,6 @@ var Handlers = {
 		X.send();
 	})
 }
-Handlers.fetchKAML();
 onmessage = function(m){
 	if (m.data[0] in Handlers) {
 		postMessage(["pending",m.data[0]]);
