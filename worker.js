@@ -1,26 +1,44 @@
-if(typeof fetch != "undefined") postMessage(["using","fetch"]);
-else postMessage(["using","xhr"]);
+var CanUse = {
+	fetch: (typeof fetch != "undefined")
+};
 
 var Handlers = {
-	fetchKAML:function(n){
+	getKAML:CanUse.fetch?(function(n){
 		fetch("pages/"+n+".kaml").then(function(r){
-			if(!r.ok) return postMessage(["fetchKAML",null,"Not OK"]);
+			if(!r.ok) return postMessage(["getKAML",null,"Not OK"]);
 			else r.text().then(function(t){
-				postMessage(["fetchKAML",parseKAML(t),null]);
+				postMessage(["getKAML",parseKAML(t),null]);
 			});
 		});
-	},
-	xhrKAML:function(n){
-
-	},
-	fetchHTML:function(n){
+	}):(function(n){
+		var X = new XMLHttpRequest();
+		X.open("GET","pages/"+n+".kaml",true);
+		X.onreadystatechange = function(){
+			if(X.readyState == 4) {
+				if(X.status == 200) postMessage(["getKAML",parseKAML(X.responseText),null]);
+				else postMessage(["getKAML",null,"Not OK"]);
+			}
+		};
+		X.send();
+	}),
+	getHTML:CanUse.fetch?(function(n){
 		fetch("pages/"+n+".html").then(function(r){
-			if(!r.ok) return postMessage(["fetchHTML",null,"Not OK"]);
+			if(!r.ok) return postMessage(["getHTML",null,"Not OK"]);
 			else r.text().then(function(t){
-				postMessage(["fetchHTML",t,null]);
+				postMessage(["getHTML",t,null]);
 			});
 		});
-	}
+	}):(function(n){
+		var X = new XMLHttpRequest();
+		X.open("GET","pages/"+n+".html",true);
+		X.onreadystatechange = function(){
+			if(X.readyState == 4) {
+				if(X.status == 200) postMessage(["getHTML",X.responseText,null]);
+				else postMessage(["getHTML",null,"Not OK"]);
+			}
+		};
+		X.send();
+	})
 }
 Handlers.fetchKAML();
 onmessage = function(m){
