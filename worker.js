@@ -3,38 +3,59 @@ var CanUse = {
 };
 
 var Handlers = {
-	getKAML:CanUse.fetch?(function(n){
+	canUse:function(d){
+		postMessage(["canUse",d,CanUse]);
+	},
+	getKAML:CanUse.fetch?(function(d,n){
 		fetch("pages/"+n+".kaml").then(function(r){
-			if(!r.ok) return postMessage(["getKAML",null,"Not OK"]);
+			if(!r.ok) return postMessage(["getKAML",d,null,"Not OK"]);
 			else r.text().then(function(t){
-				postMessage(["getKAML",parseKAML(t),null]);
+				postMessage(["getKAML",d,parseKAML(t),null]);
 			});
 		});
-	}):(function(n){
+	}):(function(d,n){
 		var X = new XMLHttpRequest();
 		X.open("GET","pages/"+n+".kaml",true);
 		X.onreadystatechange = function(){
 			if(X.readyState == 4) {
-				if(X.status == 200) postMessage(["getKAML",parseKAML(X.responseText),null]);
-				else postMessage(["getKAML",null,"Not OK"]);
+				if(X.status == 200) postMessage(["getKAML",d,parseKAML(X.responseText),null]);
+				else postMessage(["getKAML",d,null,"Not OK"]);
 			}
 		};
 		X.send();
 	}),
-	getHTML:CanUse.fetch?(function(n){
+	getHTML:CanUse.fetch?(function(d,n){
 		fetch("pages/"+n+".html").then(function(r){
-			if(!r.ok) return postMessage(["getHTML",null,"Not OK"]);
+			if(!r.ok) return postMessage(["getHTML",d,null,"Not OK"]);
 			else r.text().then(function(t){
-				postMessage(["getHTML",t,null]);
+				postMessage(["getHTML",d,t,null]);
 			});
 		});
-	}):(function(n){
+	}):(function(d,n){
 		var X = new XMLHttpRequest();
 		X.open("GET","pages/"+n+".html",true);
 		X.onreadystatechange = function(){
 			if(X.readyState == 4) {
-				if(X.status == 200) postMessage(["getHTML",X.responseText,null]);
-				else postMessage(["getHTML",null,"Not OK"]);
+				if(X.status == 200) postMessage(["getHTML",d,X.responseText,null]);
+				else postMessage(["getHTML",d,null,"Not OK"]);
+			}
+		};
+		X.send();
+	}),
+	getGitHub:CanUse.fetch?(function(d,n){
+		fetch("https://api.github.com/"+n).then(function(r){
+			if(!r.ok) return postMessage(["getGitHub",d,null,"Not OK"]);
+			else r.json().then(function(j){
+				postMessage(["getGitHub",d,j,null]);
+			});
+		});
+	}):(function(d,n){
+		var X = new XMLHttpRequest();
+		X.open("GET","https://api.github.com/"+n,true);
+		X.onreadystatechange = function(){
+			if(X.readyState == 4) {
+				if(X.status == 200) postMessage(["getGitHub",d,JSON.parse(X.responseText),null]);
+				else postMessage(["getGitHub",d,null,"Not OK"]);
 			}
 		};
 		X.send();
@@ -42,11 +63,9 @@ var Handlers = {
 }
 onmessage = function(m){
 	if (m.data[0] in Handlers) {
-		postMessage(["pending",m.data[0]]);
 		Handlers[m.data.shift()].apply(null,m.data);
 	}
 };
-
 function parseKAML(S,O){
 	var A=[];
 	return S

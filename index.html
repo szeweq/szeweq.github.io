@@ -4,13 +4,20 @@
 	<meta charset="utf-8" />
 	<title>Szewek</title>
 	<link rel="stylesheet" type="text/css" href="style.css" />
+	<link rel="localization" href="langs.json" />
+	<script type="application/javascript" src="l20n.min.js"></script>
 	<script type="application/javascript" src="main.js"></script>
 </head>
 <body>
 	<header>
 		<div id="nav-bg"></div>
 		<nav>
-			<ul><li><a href="#">Link 1</a></li><li><a href="#">Link 2</a></li><li><a href="#">Link 3</a></li></ul><div id="more">...</div>
+			<ul>
+				<li><a data-l10n-id="follow" target="_blank" href="https://github.com/Szewek"></a></li>
+				<li><a data-l10n-id="repos" target="_blank" href="https://github.com/Szewek/repositories"></a></li>
+				<li><a href="#">Link 3</a></li>
+			</ul>
+			<div id="more">...</div>
 		</nav>
 		<h1>Szewek</h1>
 	</header>
@@ -18,7 +25,7 @@
 		This is only temporary page...
 	</main>
 	<footer>
-		Website powered by <a href="https://github.com/">GitHub</a>.
+		<span data-l10n-id="poweredBy"></span> <a href="https://github.com/">GitHub</a>.
 	</footer>
 </body>
 </html>
