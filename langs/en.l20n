@@ -1,3 +1,10 @@
 <follow "Follow me">
 <repos "My repositories">
+<name "Name">
+<desc "Description">
+<info "Information">
+<fork "Forked">
+<private "Private">
+<yesCaps "YES">
+<noCaps "NO">
 <poweredBy "Website powered by">

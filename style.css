@@ -1,9 +1,12 @@
 * {box-sizing: border-box;}
 body {
+	position: relative;
 	font-family: sans-serif;
 	margin: 0;
 	padding: 0;
 	height: 1000px;
+	background: #404040;
+	color: #FFF;
 }
 header {
 	color: #FFF;
@@ -11,8 +14,7 @@ header {
 }
 #nav-bg {
 	z-index: 1;
-	background: #404040;
-	box-shadow: 0 4px 8px #808080;
+	box-shadow: 0 4px 8px rgba(0,0,0,0.5);
 }
 #nav-bg, header nav {
 	position: fixed;
@@ -40,6 +42,7 @@ header nav ul li a {
 	text-decoration: none;
 	padding: 4px 8px;
 	line-height: 32px;
+	height: 40px;
 }
 #more {
 	display: inline-block;
@@ -51,8 +54,8 @@ header nav ul li a {
 header nav ul li a, #more {
 	cursor: pointer;
 }
-header nav ul li:hover, #more:hover {
-	background: #606060;
+header nav ul li a:hover, #more:hover {
+	border-bottom: 4px solid #808080;
 }
 header h1 {
 	position: relative;
@@ -61,22 +64,69 @@ header h1 {
 	font-size: 60px;
 	font-weight: normal;
 	padding: 48px 8px 0 8px;
-	line-height: 48px;
-	background: #404040;
+	line-height: 50px;
 }
 main {
 	padding: 8px;
 }
+main article table {width: 100%;}
 footer {
 	height: 32px;
 	line-height: 32px;
 	text-align: center;
 	color: #FFF;
-	background: #404040;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
 }
-footer a {
+a {
 	color: #C0C040;
 }
-footer a:not(:hover) {
+a:not(:hover) {
 	text-decoration: none;
+}
+.hoverable {
+	position: relative;
+}
+.hoverable:before {
+	content: attr(data-title);
+	display: none;
+	position: absolute;
+	top: 100%;
+	left: 50%;
+	right: 50%;
+	margin: 4px -16px 0 -16px;
+	background: #000;
+	text-align: center;
+	width: 32px;
+	line-height: 32px;
+	height: 32px;
+}
+.hoverable:after {
+	display: none;
+	content: '';
+	position: absolute;
+	bottom: -4px;
+	left: 50%;
+	right: 50%;
+	margin: 0 -4px;
+	width: 0;
+	height: 0;
+	border: 4px solid transparent;
+	border-top: none;
+	border-bottom-color: #000;
+}
+.hoverable:hover:before {
+	display: block;
+}
+.hoverable:hover:after {
+	display: block;
+}
+/* BACKGROUND */
+#nav-bg, header h1, footer {
+	background: radial-gradient(circle at 0px 0px, rgba(0,0,0,1) 1px, rgba(0,0,0,0) 1px) #202020;
+	background-size: 4px 4px;
+	background-repeat: repeat;
+	background-attachment: fixed;
 }

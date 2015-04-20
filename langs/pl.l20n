@@ -1,3 +1,10 @@
 <follow "Dołącz do mnie">
 <repos "Moje repozytoria">
+<name "Nazwa">
+<desc "Opis">
+<info "Informacje">
+<fork "Fork">
+<private "Prywatne">
+<yesCaps "TAK">
+<noCaps "NIE">
 <poweredBy "Strona działa dzięki serwisowi">
