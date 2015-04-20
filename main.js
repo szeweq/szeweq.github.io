@@ -7,6 +7,9 @@ var CanUse = {
 	promise: ("Promise" in window),
 	hashchange: ("onhashchange" in window)
 };
+function dateFormat(dt){
+	return (new Date(dt)).toLocaleString(navigator.language,{month:"short",day:"numeric",year:"numeric",hour:"2-digit",minute:"2-digit",second:"2-digit"});
+}
 function ready(){
 	return new Promise(function(g,r){
 		if(document.readyState == "interactive" || document.readyState == "complete") g();
@@ -42,9 +45,10 @@ function command(){
 	});
 }
 var
-	getHTML = command.bind(null, "getHTML"),
-	getKAML = command.bind(null, "getKAML"),
-	getGitHub = command.bind(null, "getGitHub");
+	addCommand = command.bind.bind(command,null),
+	getHTML = addCommand("getHTML"),
+	getKAML = addCommand("getKAML"),
+	getGitHub = addCommand("getGitHub");
 function hash(h){
 	location.hash = "";
 	switch(h){
