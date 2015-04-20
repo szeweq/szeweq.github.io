@@ -54,9 +54,16 @@ function hash(h){
 	switch(h){
 		case "repos": getGitHub("users/Szewek/repos").then(function(j){
 			$1("main").innerHTML = "<article id=\"my-repos\"><h2 data-l10n-id=\"repos\"></h2><table></table></article>";
-			$1("main #my-repos table").innerHTML += "<thead><tr><th data-l10n-id=\"name\"></th><th data-l10n-id=\"desc\"></th><th data-l10n-id=\"fork\"></th><th data-l10n-id=\"private\"></th></tr></thead><tbody></tbody>";
+			$1("main #my-repos table").innerHTML += "<thead><tr><th data-l10n-id=\"name\"></th><th data-l10n-id=\"desc\"></th><th data-l10n-id=\"fork\"></th><th data-l10n-id=\"private\"></th><th data-l10n-id=\"created\"></th><th data-l10n-id=\"changed\"></th></tr></thead><tbody></tbody>";
 			if(j instanceof Array) j.forEach(function(e){
-				document.querySelector("main #my-repos table tbody").innerHTML += "<tr><td>"+(["<a href=\""+e.html_url+"\">"+e.name+"</a>",e.description,"<span data-l10n-id=\""+(e.fork?"yes":"no")+"Caps\"></span>","<span data-l10n-id=\""+(e.private?"yes":"no")+"Caps\"></span>"]).join("</td><td>")+"</td></tr>";
+				document.querySelector("main #my-repos table tbody").innerHTML += "<tr><td>"+([
+					"<a href=\""+e.html_url+"\">"+e.name+"</a>",
+					e.description,
+					"<span data-l10n-id=\""+(e.fork?"yes":"no")+"Caps\"></span>",
+					"<span data-l10n-id=\""+(e.private?"yes":"no")+"Caps\"></span>",
+					dateFormat(e.created_at),
+					dateFormat(e.updated_at)
+					]).join("</td><td>")+"</td></tr>";
 			});
 			document.l10n.localizeNode(document.querySelector("main #my-repos"));
 		}); break;
