@@ -1,3 +1,10 @@
+@keyframes show-op {from{opacity:0;}}
+@keyframes hide-op {to{opacity:0;}}
+@keyframes show-sc {from{transform:scale(0);}}
+@keyframes hide-sc {to{transform:scale(0);}}
+@keyframes rot {to{transform:rotate(360deg);}}
+@keyframes dash {50%{stroke-dasharray:89,200;stroke-dashoffset:-35;}to{stroke-dasharray:89,200;stroke-dashoffset:-100;}}
+@keyframes show {from{opacity:0;transform:translateY(16px);}}
 * {box-sizing: border-box;}
 body {
 	position: relative;
@@ -8,13 +15,54 @@ body {
 	background: #404040;
 	color: #FFF;
 }
+#loadbg {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	z-index: 9;
+	opacity: 0.5;
+}
+#loadbg.showing {animation: show-op 0.5s;}
+#loadbg.hiding {animation: hide-op 0.5s;}
+#loadbg.hidden {display: none;}
+#loadcircle {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	margin: -24px;
+	width: 48px;
+	height: 48px;
+	border-radius: 50%;
+	z-index: 10;
+	background: #202020;
+}
+#loadcircle svg {
+	animation: rot 2s linear infinite;
+}
+#loadcircle svg circle {
+	animation: dash 2.25s ease-in-out infinite;
+	stroke: #FFF;
+	fill: none;
+	stroke-width: 4px;
+	stroke-miterlimit: 10;
+	stroke-dashoffset: 0;
+	stroke-dasharray: 1,200;
+
+}
+#loadcircle.showing {animation: show-sc 0.5s;}
+#loadcircle.hiding {animation: hide-sc 0.5s;}
+#loadcircle.hidden {transform: scale(0);}
+#loadcircle.hidden svg, #loadcircle.hidden svg circle {animation: none;}
+#loadbar {
+	position: fixed; top: 0; right: 100%; width: 100%; height: 4px; z-index: 10;
+}
 header {
-	color: #FFF;
-	overflow: hidden;
+	color: #FFF; overflow: hidden;
 }
 #nav-bg {
-	z-index: 1;
-	box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+	z-index: 1; box-shadow: 0 4px 8px rgba(0,0,0,0.5);
 }
 #nav-bg, header nav {
 	position: fixed;
@@ -24,8 +72,7 @@ header {
 	height: 40px;
 }
 header nav {
-	z-index: 3;
-	text-align: right;
+	z-index: 3; text-align: right;
 }
 header nav ul {
 	list-style: none;
@@ -69,6 +116,9 @@ header h1 {
 main {
 	padding: 8px;
 }
+main article {
+	animation: show 0.4s;
+}
 main article table {width: 100%;}
 footer {
 	height: 32px;
@@ -81,7 +131,7 @@ footer {
 	right: 0;
 }
 a {
-	color: #C0C040;
+	color: #B0D060;
 }
 a:not(:hover) {
 	text-decoration: none;
@@ -124,19 +174,23 @@ a:not(:hover) {
 	display: block;
 }
 table {
-	border-spacing: 4px;
+	border-spacing: 6px;
 }
 table th, table td {
 	padding: 4px;
 }
 table th {
-	box-shadow: 0 0 2px #000;
+	box-shadow: -2px -2px #202020, 2px 2px #202020;
 }
 table td {
-	box-shadow: 0 0 2px #202020;
+	box-shadow: -2px -2px #303030, 2px 2px #303030;
+}
+table h3 {
+	margin: 0;
+	padding: 6px 0;
 }
 /* BACKGROUND */
-#nav-bg, header h1, footer {
+#loadbg, #nav-bg, header h1, footer {
 	background: radial-gradient(circle at 0px 0px, rgba(0,0,0,1) 1px, rgba(0,0,0,0) 1px) #202020;
 	background-size: 4px 4px;
 	background-repeat: repeat;

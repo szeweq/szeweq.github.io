@@ -72,7 +72,7 @@ function parseKAML(S,O){
 	.replace(/<\?\s*([^>\s]*)\s*>/ig,function(f,m){return O[m]})
 	.replace(/<(\/|([^ >]*)([^>]*))>/ig,function(f,m,n,e){
 		if(n){
-			var I=[],C=[],T=[],
+			var I=[],C=[],
 				r=n.replace(/([.#])([^ .#]*)/g,function(xg,z,xs){(z=="."?C:z=="#"?I:[]).push(xs.replace("#",""));return "";}).replace(/^\/\//i,""),
 				v=n.match(/^\/\//i),
 				z=e.split(/ ([^="]=?"[^"]"|\/)/).filter(function(e){return e.length;}).map(function(e){
