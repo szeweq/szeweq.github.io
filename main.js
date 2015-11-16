@@ -2,17 +2,30 @@ const ANIM = {
 	start:"animationstart webkitAnimationStart mozAnimationStart MSAnimationStart oanimationstart",
 	iter:"animationiteration webkitAnimationIteration mozAnimationIteration MSAnimationIteration oanimationiteration",
 	end:"animationend webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend"
+}, MODELS = {
+	"repos-table-row": function(c, o) {
+		var a = c.querySelector("h3 a");
+		a.href = o.html_url;
+		a.textContent = o.name;
+		c.querySelector(".desc").textContent = o.description;
+		c.querySelector(".gitLang").textContent = o.language;
+		c.querySelector(".isFork").dataset.l10nId = (o.fork ? "yes" : "no") + "Caps";
+		c.querySelector(".isPrivate").dataset.l10nId = (o.private ? "yes" : "no") + "Caps";
+		c.querySelector(".timeCreated").textContent = dateFormat(o.created_at);
+		c.querySelector(".timeUpdated").textContent = dateFormat(o.updated_at);
+	}
 };
 var $2 = function(d){return HTMLDocument.prototype.querySelector.bind(d);}, $1 = $2(document);
 var WI = new Worker("worker.js");
-WI.onmessage = function(m) {
-	console.log(m);
-};
-var Loading = {}, CanUse = {
-	promise: ("Promise" in window),
-	hashchange: ("onhashchange" in window)
-};
+var Loading = {};
 Function.prototype.args = (function(){var A = Array.from(arguments);A.unshift(null);return this.bind.apply(this,A);});
+function useModel(n, o, e) {
+	var t = document.querySelector('template[data-model="' + n + '"]');
+	if (!t || !t.content) return;
+	if(n in MODELS) MODELS[n](t.content, o);
+	var cl = document.importNode(t.content, true);
+	e.appendChild(cl);
+}
 function dateFormat(dt){return (new Date(dt)).toLocaleString(navigator.language,{month:"short",day:"numeric",year:"numeric",hour:"2-digit",minute:"2-digit",second:"2-digit"});}
 function JS(js){
 	var s = document.createElement("script");
@@ -72,18 +85,14 @@ function hash(h){
 		case "repos":
 			Loading.on();
 			getGitHub("users/Szewek/repos").then(function(j){
-				$1("main").innerHTML = "<article id=\"my-repos\"><h2 data-l10n-id=\"repos\"></h2><table></table></article>";
-				$1("main #my-repos table").innerHTML += "<thead><tr><th data-l10n-id=\"repo\"></th><th data-l10n-id=\"fork\"></th><th data-l10n-id=\"private\"></th><th data-l10n-id=\"created\"></th><th data-l10n-id=\"changed\"></th></tr></thead><tbody></tbody>";
+				var M = $1("main");
+				M.innerHTML = "";
+				useModel("repos-page", {}, M);
 				if(j instanceof Array) j.forEach(function(e){
-					$1("main #my-repos table tbody").innerHTML += "<tr><td>"+([
-						"<h3><a href=\""+e.html_url+"\">"+e.name+"</a></h3>"+e.description,
-						"<span data-l10n-id=\""+(e.fork?"yes":"no")+"Caps\"></span>",
-						"<span data-l10n-id=\""+(e.private?"yes":"no")+"Caps\"></span>",
-						dateFormat(e.created_at),
-						dateFormat(e.updated_at)
-						]).join("</td><td>")+"</td></tr>";
+					useModel("repos-table-row", e, $1("main table tbody"));
 				});
-				document.l10n.localizeNode(document.querySelector("main #my-repos"));
+				document.l10n.localizeNode(document.querySelector("main"));
+				setTimeout(Loading.off, 100);
 				Loading.off();
 			}); break;
 		default: console.log("UNKNOWN HASH:",h); break;
@@ -93,17 +102,15 @@ window.onhashchange = function(e){
 	if(location.hash == "" || location.hash == "#") return false;
 	hash(location.hash.substring(1));
 };
-Promise.all([JS("l20n.min.js"),JS("https://raw.githubusercontent.com/bendc/sprint/master/sprint.min.js")])
+Promise.all([JS("l20n.min.js"),JS("sprint.min.js")])
 .then(function(){
-	Loading.$=$("#loadcircle, #loadbar");
-	Loading.$b=$("#loadbar");
-	Loading.on=function(){this.$.addClass("showing").removeClass("hidden");};
-	Loading.progress=function(q){this.$b.css("transform","translateX("+(q*100)+"%)");};
-	Loading.off=function(){this.$b.css("transform","translateX(100%)");this.$.addClass("hiding");};
+	Loading.$=$("#loadcircle");
+	Loading.on=function(){Loading.$.addClass("showing").removeClass("hidden");};
+	Loading.off=function(){Loading.$.addClass("hiding");};
 })
 .then(ready)
 .then(function(){
-	$("#loadbg, #loadcircle, #loadbar").on(ANIM.end,function(){U=$(this);if(U.hasClass("hiding"))U.addClass("hidden");U.removeClass("hiding showing");});
+	$("#loadbg, #loadcircle").on(ANIM.end,function(){U=$(this);if(U.hasClass("hiding"))U.addClass("hidden");U.removeClass("hiding showing");});
 	return getGitHub("users/Szewek");
 })
 .then(function(j){

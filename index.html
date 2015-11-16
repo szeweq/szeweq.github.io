@@ -7,11 +7,12 @@
 	<link rel="localization" href="langs.json" />
 	<script async type="application/javascript" src="main.js"></script>
 	<link rel="stylesheet" href="style.css" />
+	<template data-model="repos-page"><h2 data-l10n-id="repos"></h2><table><thead><tr><th data-l10n-id="repo"></th><th data-l10n-id="lang"></th><th data-l10n-id="fork"></th><th data-l10n-id="private"></th><th data-l10n-id="created"></th><th data-l10n-id="changed"></th></tr></thead><tbody></tbody></table></template>
+	<template data-model="repos-table-row"><tr><td><h3><a></a></h3><div class="desc"></div></td><td class="gitLang"></td><td><span class="isFork"></span></td><td><span class="isPrivate"></span></td><td class="timeCreated"></td><td class="timeUpdated"></td></tr></template>
 </head>
 <body>
 	<div id="loadbg"></div>
-	<div id="loadcircle"><svg width="48" height="48"><circle cx="24" cy="24" r="16"/></svg></div>
-	<div id="loadbar"></div>
+	<div id="loadcircle"><div id="load-dot1"></div><div id="load-dot2"></div><div id="load-dot3"></div></div>
 	<header>
 		<div id="nav-bg"></div>
 		<nav>

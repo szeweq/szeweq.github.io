@@ -5,6 +5,7 @@
 @keyframes rot {to{transform:rotate(360deg);}}
 @keyframes dash {50%{stroke-dasharray:89,200;stroke-dashoffset:-35;}to{stroke-dasharray:89,200;stroke-dashoffset:-100;}}
 @keyframes show {from{opacity:0;transform:translateY(16px);}}
+@keyframes bounc {5%{transform: translateY(0px);}50%{transform: translateY(32px);}95%{transform: translateY(0px);}}
 * {box-sizing: border-box;}
 body {
 	position: relative;
@@ -27,34 +28,38 @@ body {
 #loadbg.showing {animation: show-op 0.5s;}
 #loadbg.hiding {animation: hide-op 0.5s;}
 #loadbg.hidden {display: none;}
+#load-dot1, #load-dot2, #load-dot3 {
+	display: inline-block;
+	width: 8px;
+	height: 8px;
+	border-radius: 4px;
+	margin: 2px;
+	background: #FFF;
+	animation: bounc 1s cubic-bezier(0.65, 0.1, 0.35, 0.9) infinite;
+}
+#load-dot2 {
+	animation-delay: 0.1s;
+}
+#load-dot3 {
+	animation-delay: 0.2s;
+}
 #loadcircle {
 	position: fixed;
-	top: 50%;
+	top: 98px;
 	left: 50%;
-	margin: -24px;
-	width: 48px;
-	height: 48px;
-	border-radius: 50%;
+	margin: -28px;
+	width: 56px;
+	height: 56px;
+	padding: 4px 0;
+	border-radius: 4px;
 	z-index: 10;
-	background: #202020;
-}
-#loadcircle svg {
-	animation: rot 2s linear infinite;
-}
-#loadcircle svg circle {
-	animation: dash 2.25s ease-in-out infinite;
-	stroke: #FFF;
-	fill: none;
-	stroke-width: 4px;
-	stroke-miterlimit: 10;
-	stroke-dashoffset: 0;
-	stroke-dasharray: 1,200;
-
+	background: #181818;
+	text-align: center;
 }
 #loadcircle.showing {animation: show-sc 0.5s;}
 #loadcircle.hiding {animation: hide-sc 0.5s;}
 #loadcircle.hidden {transform: scale(0);}
-#loadcircle.hidden svg, #loadcircle.hidden svg circle {animation: none;}
+#loadcircle.hidden * {animation: none;}
 #loadbar {
 	position: fixed; top: 0; right: 100%; width: 100%; height: 4px; z-index: 10;
 }
@@ -175,6 +180,9 @@ a:not(:hover) {
 }
 table {
 	border-spacing: 6px;
+}
+main table {
+	width: 100%;
 }
 table th, table td {
 	padding: 4px;

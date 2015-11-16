@@ -1,8 +1,9 @@
-<follow "Dołącz do mnie">
+<follow "Przyłącz się">
 <repos "Moje repozytoria">
 <repo "Repozytorium">
 <name "Nazwa">
 <desc "Opis">
+<lang "Język programowania">
 <info "Informacje">
 <fork "Fork">
 <private "Prywatne">

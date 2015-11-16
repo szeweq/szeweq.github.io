@@ -1,8 +1,9 @@
-<follow "Follow me">
+<follow "Follow">
 <repos "My repositories">
 <repo "Repository">
 <name "Name">
 <desc "Description">
+<lang "Programming language">
 <info "Information">
 <fork "Forked">
 <private "Private">
