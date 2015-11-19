@@ -1,18 +1,34 @@
-const ANIM = {
+const MENU = [
+	{id: "a-follow", hoverable: true, hover: "...", link: "https://github.com/Szewek", loc: "follow"},
+	{id: "a-repos", hoverable: true, hover: "...", link: "#repos", loc: "repos"}
+], ANIM = {
 	start:"animationstart webkitAnimationStart mozAnimationStart MSAnimationStart oanimationstart",
 	iter:"animationiteration webkitAnimationIteration mozAnimationIteration MSAnimationIteration oanimationiteration",
 	end:"animationend webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend"
 }, MODELS = {
 	"repos-table-row": function(c, o) {
-		var a = c.querySelector("h3 a");
+		var a = c.querySelector(".repolink");
 		a.href = o.html_url;
 		a.textContent = o.name;
+		c.querySelector(".readmelink").href = "#readme/"+ o.name;
+		c.querySelector(".issuelink").href = "https://github.com/Szewek/"+ o.name +"/issues";
 		c.querySelector(".desc").textContent = o.description;
 		c.querySelector(".gitLang").textContent = o.language;
 		c.querySelector(".isFork").dataset.l10nId = (o.fork ? "yes" : "no") + "Caps";
 		c.querySelector(".isPrivate").dataset.l10nId = (o.private ? "yes" : "no") + "Caps";
 		c.querySelector(".timeCreated").textContent = dateFormat(o.created_at);
 		c.querySelector(".timeUpdated").textContent = dateFormat(o.updated_at);
+	},
+	"nav-link": function(c, o) {
+		var a = c.querySelector("a");
+		a.id = o.id;
+		a.target = o.link.charAt(0) == "#" ? "" : "_blank";
+		a.href = o.link;
+		if (o.hoverable) {
+			a.classList.add("hoverable");
+			a.dataset.title = o.hover;
+		}
+		if (o.loc) a.dataset.l10nId = o.loc;
 	}
 };
 var $2 = function(d){return HTMLDocument.prototype.querySelector.bind(d);}, $1 = $2(document);
@@ -77,11 +93,11 @@ function command(){
 var
 	addCommand = command.bind.bind(command,null),
 	getHTML = addCommand("getHTML"),
-	getKAML = addCommand("getKAML"),
-	getGitHub = addCommand("getGitHub");
+	getGitHub = addCommand("getGitHub"),
+	getReadme = addCommand("getReadme");
 function hash(h){
 	location.hash = "";
-	switch(h){
+	switch(h[0]){
 		case "repos":
 			Loading.on();
 			getGitHub("users/Szewek/repos").then(function(j){
@@ -91,16 +107,25 @@ function hash(h){
 				if(j instanceof Array) j.forEach(function(e){
 					useModel("repos-table-row", e, $1("main table tbody"));
 				});
-				document.l10n.localizeNode(document.querySelector("main"));
+				document.l10n.localizeNode($1("main"));
 				setTimeout(Loading.off, 100);
-				Loading.off();
+			}); break;
+		case "readme":
+			Loading.on();
+			getReadme(h[1]).then(function(md){
+				var M = $1("main");
+				M.innerHTML = "";
+				var MD = document.createElement("section");
+				MD.innerHTML = md;
+				M.appendChild(MD);
+				setTimeout(Loading.off, 100);
 			}); break;
 		default: console.log("UNKNOWN HASH:",h); break;
 	}
 }
 window.onhashchange = function(e){
 	if(location.hash == "" || location.hash == "#") return false;
-	hash(location.hash.substring(1));
+	hash(location.hash.substring(1).split("/"));
 };
 Promise.all([JS("l20n.min.js"),JS("sprint.min.js")])
 .then(function(){
@@ -114,9 +139,13 @@ Promise.all([JS("l20n.min.js"),JS("sprint.min.js")])
 	return getGitHub("users/Szewek");
 })
 .then(function(j){
-	$1("header nav #repos").dataset.title = j.public_repos;
-	$1("header nav #follow").dataset.title = j.followers;
+	var N = $1("header nav");
+	MENU.forEach(function(e){useModel("nav-link", e, N);});
+	document.l10n.localizeNode(N);
+	$1("header nav #a-repos").dataset.title = j.public_repos;
+	$1("header nav #a-follow").dataset.title = j.followers;
 })
 .then(function(){
 	setTimeout(function(){$("#loadbg, #loadcircle, #loadbar").addClass("hiding");},200);
+	document.body.classList.remove("preload");
 });

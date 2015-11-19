@@ -1,33 +1,23 @@
-@keyframes show-op {from{opacity:0;}}
-@keyframes hide-op {to{opacity:0;}}
 @keyframes show-sc {from{transform:scale(0);}}
 @keyframes hide-sc {to{transform:scale(0);}}
 @keyframes rot {to{transform:rotate(360deg);}}
 @keyframes dash {50%{stroke-dasharray:89,200;stroke-dashoffset:-35;}to{stroke-dasharray:89,200;stroke-dashoffset:-100;}}
 @keyframes show {from{opacity:0;transform:translateY(16px);}}
 @keyframes bounc {5%{transform: translateY(0px);}50%{transform: translateY(32px);}95%{transform: translateY(0px);}}
+@keyframes sdown {from{opacity: 0; transform: translateY(-40px)}}
 * {box-sizing: border-box;}
 body {
-	position: relative;
 	font-family: sans-serif;
 	margin: 0;
 	padding: 0;
-	height: 1000px;
 	background: #404040;
 	color: #FFF;
+	transition: opacity 0.5s;
 }
-#loadbg {
-	position: fixed;
-	top: 0;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	z-index: 9;
-	opacity: 0.5;
+body.preload {
+	opacity: 0;
+	z-index: -1;
 }
-#loadbg.showing {animation: show-op 0.5s;}
-#loadbg.hiding {animation: hide-op 0.5s;}
-#loadbg.hidden {display: none;}
 #load-dot1, #load-dot2, #load-dot3 {
 	display: inline-block;
 	width: 8px;
@@ -64,37 +54,33 @@ body {
 	position: fixed; top: 0; right: 100%; width: 100%; height: 4px; z-index: 10;
 }
 header {
-	color: #FFF; overflow: hidden;
+	color: #FFF;
 }
-#nav-bg {
-	z-index: 1; box-shadow: 0 4px 8px rgba(0,0,0,0.5);
-}
-#nav-bg, header nav {
-	position: fixed;
-	top: 0;
-	left: 0;
-	right: 0;
-	height: 40px;
+header h1 {
+	z-index: 9;
+	background: #202020;
+	margin: 0;
+	padding: 0 8px;
+	line-height: 56px;
+	font-size: 32px;
+	font-weight: normal;
 }
 header nav {
-	z-index: 3; text-align: right;
+	z-index: 5;
+	background: #202020;
+	box-shadow: 0 2px 4px rgba(0,0,0,0.25);
+	animation: sdown 0.25s;
 }
-header nav ul {
-	list-style: none;
-	display: inline-block;
-	margin: 0;
-	padding: 0;
-}
-header nav ul li {
-	display: inline-block;
-}
-header nav ul li a {
+header nav:empty {animation: none;}
+header nav a {
+	z-index: 6;
 	display: inline-block;
 	color: inherit;
 	text-decoration: none;
 	padding: 4px 8px;
 	line-height: 32px;
 	height: 40px;
+	text-transform: uppercase;
 }
 #more {
 	display: inline-block;
@@ -103,23 +89,15 @@ header nav ul li a {
 	text-align: center;
 	line-height: 40px;
 }
-header nav ul li a, #more {
+header nav a, #more {
 	cursor: pointer;
 }
-header nav ul li a:hover, #more:hover {
+header nav a:hover, #more:hover {
 	border-bottom: 4px solid #808080;
-}
-header h1 {
-	position: relative;
-	z-index: 2;
-	margin: 0;
-	font-size: 60px;
-	font-weight: normal;
-	padding: 48px 8px 0 8px;
-	line-height: 50px;
 }
 main {
 	padding: 8px;
+	min-height: 400px;
 }
 main article {
 	animation: show 0.4s;
@@ -130,13 +108,12 @@ footer {
 	line-height: 32px;
 	text-align: center;
 	color: #FFF;
-	position: absolute;
-	bottom: 0;
-	left: 0;
-	right: 0;
+	background: #202020;
+	box-shadow: 0 -2px 4px rgba(0,0,0,0.25);
 }
 a {
-	color: #B0D060;
+	outline: 0;
+	color: #60C0C0;
 }
 a:not(:hover) {
 	text-decoration: none;
@@ -180,6 +157,7 @@ a:not(:hover) {
 }
 table {
 	border-spacing: 6px;
+	margin: -6px;
 }
 main table {
 	width: 100%;
@@ -188,19 +166,22 @@ table th, table td {
 	padding: 4px;
 }
 table th {
-	box-shadow: -2px -2px #202020, 2px 2px #202020;
+	box-shadow: 0 2px 4px rgba(0,0,0,0.5), 0 6px 2px -6px #000;
 }
 table td {
-	box-shadow: -2px -2px #303030, 2px 2px #303030;
+	box-shadow: 0 2px 4px rgba(0,0,0,0.5);
 }
 table h3 {
 	margin: 0;
 	padding: 6px 0;
 }
-/* BACKGROUND */
-#loadbg, #nav-bg, header h1, footer {
-	background: radial-gradient(circle at 0px 0px, rgba(0,0,0,1) 1px, rgba(0,0,0,0) 1px) #202020;
-	background-size: 4px 4px;
-	background-repeat: repeat;
-	background-attachment: fixed;
+.repo-row nav {
+	border-top: 1px solid #202020;
+	margin-top: 4px;
+	margin-bottom: -4px;
+	font-size: 14px;
+	line-height: 32px;
+}
+.repo-row nav a {
+	padding: 0 4px;
 }

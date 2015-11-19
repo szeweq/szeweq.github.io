@@ -1,50 +1,70 @@
+importScripts("https://raw.githubusercontent.com/chjj/marked/master/marked.min.js");
 var CanUse = {
-	fetch: (typeof fetch != "undefined")
+	fetch: (typeof fetch != "undefined"),
+	promise: (typeof Promise != "undefined")
 };
-
+var Responder = function Responder(name, d) {
+	this.fn = name;
+	this.stamp = d;
+};
+Responder.prototype.start = function(data) {
+	this.data = data;
+	if (this.fn in Handlers) Handlers[this.fn].call(null, this);
+};
+Responder.prototype.respond = function(ret) {postMessage([this.fn, this.stamp, ret, null]);};
+Responder.prototype.error = function(err) {postMessage([this.fn, this.stamp, null, err]);};
 var Handlers = {
-	canUse:function(d){
-		postMessage(["canUse",d,CanUse]);
+	canUse:function(R){
+		R.respond(CanUse);
 	},
-	getHTML:CanUse.fetch?(function(d,n){
-		fetch("pages/"+n+".html").then(function(r){
-			if(!r.ok) return postMessage(["getHTML",d,null,"Not OK"]);
-			else r.text().then(function(t){
-				postMessage(["getHTML",d,t,null]);
-			});
+	getHTML:CanUse.fetch?(function(R){
+		fetch("pages/"+ R.data[0]+".html").then(function(r){
+			if(!r.ok) return R.error("Not OK");
+			else r.text().then(R.respond.bind(R));
 		});
-	}):(function(d,n){
+	}):(function(R){
 		var X = new XMLHttpRequest();
-		X.open("GET","pages/"+n+".html",true);
+		X.open("GET","pages/"+R.data[0]+".html",true);
 		X.onreadystatechange = function(){
 			if(X.readyState == 4) {
-				if(X.status == 200) postMessage(["getHTML",d,X.responseText,null]);
-				else postMessage(["getHTML",d,null,"Not OK"]);
+				if(X.status == 200) R.respond(X.responseText);
+				else R.error("Not OK");
 			}
 		};
 		X.send();
 	}),
-	getGitHub:CanUse.fetch?(function(d,n){
-		fetch("https://api.github.com/"+n).then(function(r){
-			if(!r.ok) return postMessage(["getGitHub",d,null,"Not OK"]);
-			else r.json().then(function(j){
-				postMessage(["getGitHub",d,j,null]);
-			});
+	getGitHub:CanUse.fetch?(function(R){
+		fetch("https://api.github.com/"+R.data[0]).then(function(r){
+			if(!r.ok) return R.error("Not OK");
+			else r.json().then(R.respond.bind(R));
 		});
-	}):(function(d,n){
+	}):(function(R){
 		var X = new XMLHttpRequest();
-		X.open("GET","https://api.github.com/"+n,true);
+		X.open("GET","https://api.github.com/"+R.data[0],true);
 		X.onreadystatechange = function(){
 			if(X.readyState == 4) {
-				if(X.status == 200) postMessage(["getGitHub",d,JSON.parse(X.responseText),null]);
-				else postMessage(["getGitHub",d,null,"Not OK"]);
+				if(X.status == 200) R.respond(JSON.parse(X.responseText));
+				else R.error("Not OK");
 			}
 		};
 		X.send();
+	}),
+	getReadme:CanUse.fetch?(function(R){
+		fetch("https://api.github.com/repos/Szewek/"+R.data[0]+"/readme").then(function(r){
+			if(!r.ok) return R.error("Not OK");
+			else r.json().then(function(j){
+				R.respond(marked(atob(j.content)));
+			});
+		});
+	}):(function(R){
+		var X = new XMLHttpRequest();
+		X.open("GET","https://api.github.com/repos/Szewek/"+R.data[0]+"/readme");
+		X.onreadystatechange = function(){
+			if(X.readyState == 4) {
+				if(X.status == 200) R.respond(marked(atob(JSON.parse(X.responseText).content)));
+				else R.error("Not OK");
+			}
+		}
 	})
 }
-onmessage = function(m){
-	if (m.data[0] in Handlers) {
-		Handlers[m.data.shift()].apply(null,m.data);
-	}
-};
+onmessage = function(m){new Responder(m.data.shift(), m.data.shift()).start(m.data);};
