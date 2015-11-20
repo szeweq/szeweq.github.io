@@ -1,4 +1,4 @@
-importScripts("https://raw.githubusercontent.com/chjj/marked/master/marked.min.js");
+importScripts("/marked.min.js");
 var CanUse = {
 	fetch: (typeof fetch != "undefined"),
 	promise: (typeof Promise != "undefined")
