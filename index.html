@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html manifest="manifest.appcache">
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
@@ -10,6 +10,7 @@
 	<template data-model="repos-page"><h2 data-l10n-id="repos"></h2><table><thead><tr><th data-l10n-id="repo"></th><th data-l10n-id="lang"></th><th data-l10n-id="fork"></th><th data-l10n-id="private"></th><th data-l10n-id="created"></th><th data-l10n-id="changed"></th></tr></thead><tbody></tbody></table></template>
 	<template data-model="repos-table-row"><tr class="repo-row"><td><h3><a class="repolink"></a></h3><div class="desc"></div><nav><a class="readmelink">README</a><a class="issuelink">ISSUES</a></nav></td><td class="gitLang"></td><td><span class="isFork"></span></td><td><span class="isPrivate"></span></td><td class="timeCreated"></td><td class="timeUpdated"></td></tr></template>
 	<style>
+		template {display: none;}
 		#load-dot1, #load-dot2, #load-dot3 {
 			display: inline-block;
 			width: 8px;
