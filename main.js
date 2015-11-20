@@ -95,8 +95,8 @@ var
 	getHTML = addCommand("getHTML"),
 	getGitHub = addCommand("getGitHub"),
 	getReadme = addCommand("getReadme");
-function hash(h){
-	location.hash = "";
+function hash(){
+	var h = location.hash.substring(1).split("/");
 	switch(h[0]){
 		case "repos":
 			Loading.on();
@@ -120,22 +120,21 @@ function hash(h){
 				M.appendChild(MD);
 				setTimeout(Loading.off, 100);
 			}); break;
-		default: console.log("UNKNOWN HASH:",h); break;
+		default: console.log("UNKNOWN HASH:",h); Loading.off(); break;
 	}
 }
 window.onhashchange = function(e){
 	if(location.hash == "" || location.hash == "#") return false;
-	hash(location.hash.substring(1).split("/"));
+	hash();
 };
 Promise.all([JS("l20n.min.js"),JS("sprint.min.js")])
-.then(function(){
-	Loading.$=$("#loadcircle");
-	Loading.on=function(){Loading.$.addClass("showing").removeClass("hidden");};
-	Loading.off=function(){Loading.$.addClass("hiding");};
-})
 .then(ready)
 .then(function(){
-	$("#loadbg, #loadcircle").on(ANIM.end,function(){U=$(this);if(U.hasClass("hiding"))U.addClass("hidden");U.removeClass("hiding showing");});
+	var STATE = true;
+	Loading.$=$("#loadcircle");
+	Loading.on=function(){if(!STATE)Loading.$.addClass("showing").removeClass("hidden");$1("#loadcontent").classList.add("load");STATE=true;};
+	Loading.off=function(){if(STATE)Loading.$.addClass("hiding");$1("#loadcontent").classList.remove("load");STATE=false;};
+	Loading.$.on(ANIM.end,function(){U=$(this);if(U.hasClass("hiding"))U.addClass("hidden");U.removeClass("hiding showing");});
 	return getGitHub("users/Szewek");
 })
 .then(function(j){
@@ -145,7 +144,4 @@ Promise.all([JS("l20n.min.js"),JS("sprint.min.js")])
 	$1("header nav #a-repos").dataset.title = j.public_repos;
 	$1("header nav #a-follow").dataset.title = j.followers;
 })
-.then(function(){
-	setTimeout(function(){$("#loadbg, #loadcircle, #loadbar").addClass("hiding");},200);
-	document.body.classList.remove("preload");
-});
+.then(hash);

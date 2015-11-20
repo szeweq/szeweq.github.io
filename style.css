@@ -12,47 +12,12 @@ body {
 	padding: 0;
 	background: #404040;
 	color: #FFF;
-	transition: opacity 0.5s;
-}
-body.preload {
-	opacity: 0;
-	z-index: -1;
-}
-#load-dot1, #load-dot2, #load-dot3 {
-	display: inline-block;
-	width: 8px;
-	height: 8px;
-	border-radius: 4px;
-	margin: 2px;
-	background: #FFF;
-	animation: bounc 1s cubic-bezier(0.65, 0.1, 0.35, 0.9) infinite;
-}
-#load-dot2 {
-	animation-delay: 0.1s;
-}
-#load-dot3 {
-	animation-delay: 0.2s;
-}
-#loadcircle {
-	position: fixed;
-	top: 98px;
-	left: 50%;
-	margin: -28px;
-	width: 56px;
-	height: 56px;
-	padding: 4px 0;
-	border-radius: 4px;
-	z-index: 10;
-	background: #181818;
-	text-align: center;
 }
 #loadcircle.showing {animation: show-sc 0.5s;}
 #loadcircle.hiding {animation: hide-sc 0.5s;}
 #loadcircle.hidden {transform: scale(0);}
 #loadcircle.hidden * {animation: none;}
-#loadbar {
-	position: fixed; top: 0; right: 100%; width: 100%; height: 4px; z-index: 10;
-}
+#loadcontent.load {opacity: 0.75 !important;}
 header {
 	color: #FFF;
 }

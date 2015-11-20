@@ -6,22 +6,52 @@
 	<title>Szewek</title>
 	<link rel="localization" href="langs.json" />
 	<script async type="application/javascript" src="main.js"></script>
-	<link rel="stylesheet" href="style.css" />
 	<template data-model="nav-link"><a></a></template>
 	<template data-model="repos-page"><h2 data-l10n-id="repos"></h2><table><thead><tr><th data-l10n-id="repo"></th><th data-l10n-id="lang"></th><th data-l10n-id="fork"></th><th data-l10n-id="private"></th><th data-l10n-id="created"></th><th data-l10n-id="changed"></th></tr></thead><tbody></tbody></table></template>
 	<template data-model="repos-table-row"><tr class="repo-row"><td><h3><a class="repolink"></a></h3><div class="desc"></div><nav><a class="readmelink">README</a><a class="issuelink">ISSUES</a></nav></td><td class="gitLang"></td><td><span class="isFork"></span></td><td><span class="isPrivate"></span></td><td class="timeCreated"></td><td class="timeUpdated"></td></tr></template>
+	<style>
+		#load-dot1, #load-dot2, #load-dot3 {
+			display: inline-block;
+			width: 8px;
+			height: 8px;
+			border-radius: 4px;
+			margin: 2px;
+			background: #FFF;
+			animation: bounc 1s cubic-bezier(0.65, 0.1, 0.35, 0.9) infinite;
+		}
+		#load-dot2 {animation-delay: 0.1s;}
+		#load-dot3 {animation-delay: 0.2s;}
+		#loadcircle {
+			position: fixed;
+			top: 98px;
+			left: 50%;
+			margin: -28px;
+			width: 56px;
+			height: 56px;
+			padding: 4px 0;
+			border-radius: 4px;
+			z-index: 10;
+			background: #181818;
+			text-align: center;
+		}
+		#loadcontent {transition: opacity 0.5s;}
+		#loadcontent.load {opacity: 0; z-index: -1;}
+	</style>
 </head>
-<body class="preload">
+<body>
 	<div id="loadcircle"><div id="load-dot1"></div><div id="load-dot2"></div><div id="load-dot3"></div></div>
-	<header>
-		<h1>Szewek</h1>
-		<nav></nav>
-	</header>
-	<main>
-		This is only temporary page...
-	</main>
-	<footer>
-		<span data-l10n-id="poweredBy"></span> <a href="https://github.com/">GitHub</a>.
-	</footer>
+	<div id="loadcontent" class="load">
+		<header>
+			<h1>Szewek</h1>
+			<nav></nav>
+		</header>
+		<main>
+			This is only temporary page...
+		</main>
+		<footer>
+			<span data-l10n-id="poweredBy"></span> <a href="https://github.com/">GitHub</a>.
+		</footer>
+	</div>
+	<link rel="stylesheet" href="style.css" />
 </body>
 </html>
