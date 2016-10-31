@@ -1,3 +1,6 @@
+[].forEach(function(e){
+
+});
 const MENU = [
 	{id: "a-follow", hoverable: true, hover: "...", link: "https://github.com/Szewek", loc: "follow"},
 	{id: "a-repos", hoverable: true, hover: "...", link: "#repos", loc: "repos"}

@@ -142,11 +142,11 @@ table h3 {
 }
 .repo-row nav {
 	border-top: 1px solid #202020;
-	margin-top: 4px;
+	margin-top: 8px;
 	margin-bottom: -4px;
 	font-size: 14px;
-	line-height: 32px;
+	line-height: 40px;
 }
 .repo-row nav a {
-	padding: 0 4px;
+	padding: 0 6px;
 }

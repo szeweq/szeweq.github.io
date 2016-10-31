@@ -1,4 +1,4 @@
-importScripts("/marked.min.js");
+importScripts("marked.min.js");
 var CanUse = {
 	fetch: (typeof fetch != "undefined"),
 	promise: (typeof Promise != "undefined")
@@ -67,4 +67,4 @@ var Handlers = {
 		}
 	})
 }
-onmessage = function(m){new Responder(m.data.shift(), m.data.shift()).start(m.data);};
+this.addEventListener("message", function(m){new Responder(m.data.shift(), m.data.shift()).start(m.data);});
