@@ -1,0 +1,33 @@
+name: Build and deploy
+
+on:
+  push:
+    branches: [dev]
+
+jobs:
+  build:
+    name: Build and deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 6.32.1
+      - uses: actions/setup-node@v2.1.5
+        with:
+          cache: 'pnpm'
+      - name: Cache Node modules
+        uses: actions/cache@v2
+        with:
+          path: ~/node_modules
+          key: cache-${{ hashFiles('**/pnpm-lock.yaml') }}
+      - name: Install dependencies and build
+        run: pnpm install
+      - name: Build
+        run: pnpm build
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@4.2.5
+        with:
+          branch: master
+          folder: dist
