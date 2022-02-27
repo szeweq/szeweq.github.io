@@ -1,0 +1,12 @@
+html, body, #app {
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+#app {
+  @apply flex flex-col sheet-1 text-black dark:text-white;
+}
+#page {
+  @apply flex flex-grow flex-col-reverse md:flex-row justify-items-stretch;
+}
