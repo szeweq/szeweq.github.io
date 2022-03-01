@@ -1,6 +1,6 @@
 <template>
-  <header class="flex flex-row items-center p-2 h-12">
-    <h1 class="mx-1">
+  <header class="flex flex-row items-center p-2 h-16 min-h-16">
+    <h1 class="mx-1 text-xl font-semibold">
       Szeweq
     </h1>
     <div class="flex-grow" />
