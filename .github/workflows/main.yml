@@ -25,6 +25,8 @@ jobs:
       - name: Install dependencies and build
         run: pnpm install
       - name: Build
+        env:
+          GTAG_ID: ${{ secrets.GTAG_ID }}
         run: pnpm build
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4.2.5
