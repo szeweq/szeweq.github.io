@@ -6,9 +6,9 @@ import Layouts from 'vite-plugin-vue-layouts'
 import Components from 'unplugin-vue-components/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import WindiCSS from 'vite-plugin-windicss'
+import generateSitemap from 'vite-plugin-pages-sitemap'
 import { VitePWA } from 'vite-plugin-pwa'
 
-// https://vitejs.dev/config/
 export default defineConfig({
   resolve: {
     alias: {
@@ -17,7 +17,11 @@ export default defineConfig({
   },
   plugins: [
     Vue(),
-    Pages(),
+    Pages({
+      onRoutesGenerated(routes) {
+        generateSitemap({ routes, hostname: 'https://szeweq.github.io/' })
+      }
+    }),
     Components({
       dts: 'src/components.d.ts',
     }),
