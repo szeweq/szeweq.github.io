@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://szeweq.github.io/sitemap.xml
