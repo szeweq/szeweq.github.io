@@ -28,7 +28,7 @@ export default defineConfig({
     Layouts(),
     AutoImport({
       dts: 'src/auto-imports.d.ts',
-      imports: ['vue', 'vue-router', '@vueuse/core']
+      imports: ['vue', 'vue-router', {'@vueuse/core': ['useFetch']}]
     }),
     WindiCSS(),
     VitePWA({
