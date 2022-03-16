@@ -5,6 +5,6 @@
     </h1>
     <div class="flex-grow" />
   </header>
-  <div id="page" class="sheet-0"><router-view /></div>
+  <div id="page" class="sheet-0 p-2"><router-view /></div>
 </template>
 
