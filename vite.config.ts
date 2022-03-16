@@ -7,6 +7,7 @@ import AutoImport from 'unplugin-auto-import/vite'
 import WindiCSS from 'vite-plugin-windicss'
 import generateSitemap from 'vite-plugin-pages-sitemap'
 import { VitePWA } from 'vite-plugin-pwa'
+import { createHtmlPlugin } from 'vite-plugin-html'
 
 export default defineConfig({
   resolve: {
@@ -16,6 +17,9 @@ export default defineConfig({
   },
   plugins: [
     Vue(),
+    createHtmlPlugin({
+      minify: true,
+    }),
     Pages({
       onRoutesGenerated(routes) {
         generateSitemap({ routes, hostname: 'https://szeweq.github.io/' })
@@ -26,7 +30,7 @@ export default defineConfig({
     }),
     AutoImport({
       dts: 'src/auto-imports.d.ts',
-      imports: ['vue', 'vue-router', {'@vueuse/core': ['useFetch']}]
+      imports: ['vue', 'vue-router', {'@vueuse/core': ['useFetch', 'useToggle', 'useTimeAgo']}]
     }),
     WindiCSS(),
     VitePWA({
