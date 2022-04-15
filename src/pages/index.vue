@@ -5,7 +5,7 @@ const _sortString = (a: string, b: string) => a.localeCompare(b)
 const _sortNumber = (a: number, b: number) => a - b
 const _sortDate = (a: string, b: string) => new Date(a).getTime() - new Date(b).getTime()
 
-const { statusCode, isFetching, data: repos } = useFetch("https://api.github.com/users/szeweq/repos").json<Repo[]>()
+const { statusCode, isFetching, data: repos, error } = useFetch("https://api.github.com/users/szeweq/repos").json<Repo[]>()
 const sortKeys: { [P in keyof Repo]?: string } = {
   name: "Name",
   stargazers_count: "Stars",
@@ -18,24 +18,25 @@ const reposSorted = computed(() => {
   if (repos.value === undefined || repos.value === null) return []
   const sortBy = sortedBy.value
   const rev = reverse.value
+  const repos1 = repos.value
   switch (sortBy) {
     case "name":
-      return repos.value.sort((a, b) => rev ? _sortString(b.name, a.name) : _sortString(a.name, b.name))
+      return repos1.sort((a, b) => rev ? _sortString(b.name, a.name) : _sortString(a.name, b.name))
     case "stargazers_count":
-      return repos.value.sort((a, b) => rev ? _sortNumber(b.stargazers_count, a.stargazers_count) : _sortNumber(a.stargazers_count, b.stargazers_count))
+      return repos1.sort((a, b) => rev ? _sortNumber(b.stargazers_count, a.stargazers_count) : _sortNumber(a.stargazers_count, b.stargazers_count))
     case "created_at":
-      return repos.value.sort((a, b) => rev ? _sortDate(b.created_at, a.created_at) : _sortDate(a.created_at, b.created_at))
+      return repos1.sort((a, b) => rev ? _sortDate(b.created_at, a.created_at) : _sortDate(a.created_at, b.created_at))
     case "updated_at":
-      return repos.value.sort((a, b) => rev ? _sortDate(b.updated_at, a.updated_at) : _sortDate(a.updated_at, b.updated_at))
+      return repos1.sort((a, b) => rev ? _sortDate(b.updated_at, a.updated_at) : _sortDate(a.updated_at, b.updated_at))
     default:
-      return repos.value
+      return repos1
   }
 })
 const reverseSymbol = computed(() => reverse.value ? "▼" : "▲")
 
 </script>
 <template>
-  <main class="w-full p-2 md:p-4" aria-live="assertive" aria-atomic="true">
+  <main class="w-full p-2 md:px-4 lg:px-8" aria-live="assertive" aria-atomic="true">
     <div class="flex flex-row justify-between items-center">
       <h1 class="text-3xl mb-2 font-bold">My repositories</h1>
       <div>
@@ -47,9 +48,12 @@ const reverseSymbol = computed(() => reverse.value ? "▼" : "▲")
         </div>
       </div>
     </div>
-    <div v-if="isFetching">Loading...</div>
+    <div v-if="isFetching" class="text-center">Loading...</div>
     <ul v-else-if="statusCode === 200">
       <RepoCard v-for="repo in reposSorted" :key="repo.id" :repo="repo" />
     </ul>
+    <div v-else class="text-center">
+      Error: {{ error }}
+    </div>
   </main>
 </template>
