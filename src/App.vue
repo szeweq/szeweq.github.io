@@ -4,6 +4,7 @@
       Szeweq
     </h1>
     <div class="flex-grow" />
+    <a class="btn btn-sm" href="https://github.com/Szeweq">GitHub</a>
   </header>
   <div id="page" class="sheet-0 p-2"><router-view /></div>
 </template>
