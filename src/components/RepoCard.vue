@@ -14,7 +14,7 @@ const updatedDur = useTimeAgo(repo.updated_at)
       </div>
     </div>
     <div>
-      <p v-text="repo.description" />
+      <p class="py-1" v-text="repo.description" />
       <p>Language: {{ repo.language }}</p>
       <p>License: {{ repo.license?.name ?? "None" }}</p>
     </div>
