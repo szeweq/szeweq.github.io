@@ -37,8 +37,8 @@ const reverseSymbol = computed(() => reverse.value ? "▼" : "▲")
 </script>
 <template>
   <main class="w-full p-2 md:px-4 lg:px-8" aria-live="assertive" aria-atomic="true">
-    <div class="flex flex-row justify-between items-center">
-      <h1 class="text-3xl mb-2 font-bold">My repositories</h1>
+    <div class="flex flex-row justify-between items-center py-1 mb-2">
+      <h1 class="text-2xl font-bold">My repositories</h1>
       <div>
         <div class="input-group input-group-sm">
           <select class="select select-sm" v-model="sortedBy" title="Sort by">
@@ -49,9 +49,9 @@ const reverseSymbol = computed(() => reverse.value ? "▼" : "▲")
       </div>
     </div>
     <div v-if="isFetching" class="text-center">Loading...</div>
-    <ul v-else-if="statusCode === 200">
+    <div v-else-if="statusCode === 200" class="flex flex-col gap-2 justify-center md:flex-row md:flex-wrap">
       <RepoCard v-for="repo in reposSorted" :key="repo.id" :repo="repo" />
-    </ul>
+    </div>
     <div v-else class="text-center">
       Error: {{ error }}
     </div>

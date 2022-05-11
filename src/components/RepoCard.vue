@@ -6,7 +6,7 @@ const createdDur = useTimeAgo(repo.created_at)
 const updatedDur = useTimeAgo(repo.updated_at)
 </script>
 <template>
-  <li class="card sheet-1 my-2 p-2">
+  <div class="card sheet-1 p-2 md:w-[80%] lg:w-[70%] xl:w-[60%]">
     <div class="flex justify-between">
       <a class="card-title" :href="repo.html_url">{{ repo.name }}</a>
       <div>
@@ -26,5 +26,5 @@ const updatedDur = useTimeAgo(repo.updated_at)
       </div>
       <a class="btn btn-sm tint-teal" :href="repo.html_url" target="_blank">Open repo</a>
     </div>
-  </li>
+  </div>
 </template>
