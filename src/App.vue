@@ -6,6 +6,6 @@
     <div class="flex-grow" />
     <a class="btn btn-sm" href="https://github.com/Szeweq">GitHub</a>
   </header>
-  <div id="page" class="sheet-0 p-2"><router-view /></div>
+  <div id="page" class="sheet-0"><router-view /></div>
 </template>
 

@@ -7,7 +7,7 @@
   height: 100vh;
 }
 #page {
-  @apply flex flex-grow flex-col-reverse md:flex-row justify-items-stretch;
+  @apply flex flex-grow flex-col justify-items-stretch;
 }
 
 .sheet-0 {
