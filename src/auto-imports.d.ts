@@ -46,8 +46,6 @@ declare global {
   const useCssModule: typeof import('vue')['useCssModule']
   const useCssVars: typeof import('vue')['useCssVars']
   const useFetch: typeof import('@vueuse/core')['useFetch']
-  const useRoute: typeof import('vue-router')['useRoute']
-  const useRouter: typeof import('vue-router')['useRouter']
   const useSlots: typeof import('vue')['useSlots']
   const useTimeAgo: typeof import('@vueuse/core')['useTimeAgo']
   const useToggle: typeof import('@vueuse/core')['useToggle']

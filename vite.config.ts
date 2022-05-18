@@ -22,13 +22,13 @@ export default defineConfig({
     }),
     AutoImport({
       dts: 'src/auto-imports.d.ts',
-      imports: ['vue', 'vue-router', {'@vueuse/core': ['useFetch', 'useToggle', 'useTimeAgo']}]
+      imports: ['vue', {'@vueuse/core': ['useFetch', 'useToggle', 'useTimeAgo']}]
     }),
     VitePWA({
       registerType: 'autoUpdate',
     })
   ],
   optimizeDeps: {
-    include: ['vue', 'vue-router', '@vueuse/core']
+    include: ['vue', '@vueuse/core']
   }
 })
