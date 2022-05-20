@@ -2,6 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --bg: theme('colors.teal.100');
+  --bg-hover: theme('colors.teal.300');
+  --bg-active: theme('colors.teal.400');
+  --fg: theme('colors.teal.800');
+}
+@media screen and (prefers-color-scheme: dark) {
+  :root {
+    --bg: theme('colors.teal.900');
+    --bg-hover: theme('colors.teal.700');
+    --bg-active: theme('colors.teal.600');
+    --fg: theme('colors.teal.200');
+  }
+}
+
 #root {
   @apply flex flex-col sheet-1 text-black dark:text-white;
   height: 100vh;
@@ -20,6 +35,30 @@
   @apply bg-gray-200 dark:bg-gray-700;
 }
 
-.tint-teal {
-  @apply bg-teal-100 text-teal-800 dark:bg-teal-900 dark:text-teal-200 hover:bg-teal-300 hover:dark:bg-teal-700 active:bg-teal-400 active:dark:bg-teal-600;
+.tinted {
+  background: var(--bg);
+  color: var(--fg);
+}
+.tinted:hover {
+  background: var(--bg-hover);
+}
+.tinted:active {
+  background: var(--bg-active);
+}
+
+.stroked {
+  border-color: var(--bg);
+}
+.stroked:hover {
+  border-color: var(--bg-hover);
+}
+.stroked:active {
+  border-color: var(--bg-active);
+}
+
+.btn {
+  @apply px-2 py-1 rounded;
+}
+.select {
+  @apply dark:bg-gray-900 dark:text-gray-200;
 }

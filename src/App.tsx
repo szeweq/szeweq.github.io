@@ -20,7 +20,7 @@ const sortKeys: { [P in keyof Repo]?: string } = {
   updated_at: "Updated",
 }
 type SortKey = keyof typeof sortKeys
-const getRepos = async (user: string): Promise<Repo[]> => (await fetch(`https://api.github.com/users/${user}/repos`)).json()
+const getRepos = async (): Promise<Repo[]> => (await fetch(`https://api.github.com/users/szeweq/repos`)).json()
 const _sortDate = (a: string, b: string) => (+new Date(a)) - (+new Date(b))
 
 const RepoCard: Component<{repo: Repo}> = ({repo}) => {
@@ -46,14 +46,14 @@ const RepoCard: Component<{repo: Repo}> = ({repo}) => {
           <span>&nbsp;&CenterDot;&nbsp;</span>
           <span>Updated <time datetime={repo.updated_at}>{ updatedDur }</time></span>
         </div>
-        <a class="btn btn-sm tint-teal" href={repo.html_url} target="_blank">Open repo</a>
+        <a class="btn btn-sm tinted" href={repo.html_url} target="_blank">Open repo</a>
       </div>
     </div>
   )
 }
 
-const RepoList: Component<{user: string, sortBy: Accessor<SortKey>, reverse: Accessor<boolean>}> = ({user, reverse, sortBy}) => {
-  const [repos] = createResource(user, getRepos)
+const RepoList: Component<{sortBy: Accessor<SortKey>, reverse: Accessor<boolean>}> = ({reverse, sortBy}) => {
+  const [repos] = createResource(getRepos)
   const reposSorted = () => {
     const r = repos()
     if (r === undefined || r === null || r.length == 0) return []
@@ -93,16 +93,14 @@ const Page: Component = () => {
     <main class="w-full p-2 mx-auto md:w-[80%] lg:w-[70%] xl:w-[60%]" aria-live="assertive" aria-atomic="true">
       <div class="flex flex-row justify-between items-center py-1 mb-2">
         <h1 class="text-2xl font-bold">My repositories</h1>
-        <div>
-          <div class="input-group input-group-sm">
-            <select class="select select-sm" title="Sort by" onInput={(e) => setSortBy(e.currentTarget.value as SortKey)}>
-              <For each={Object.entries(sortKeys)}>{([key, value]) => (<option value={key}>{value}</option>)}</For>
-            </select>
-            <button class="btn btn-sm" onClick={() => setReverse(!reverse())}>{ reverseSymbol() }</button>
-          </div>
+        <div class="flex">
+          <select class="select h-8 border stroked rounded-l" title="Sort by" onInput={(e) => setSortBy(e.currentTarget.value as SortKey)}>
+            <For each={Object.entries(sortKeys)}>{([key, value]) => (<option value={key}>{value}</option>)}</For>
+          </select>
+          <button class="btn h-8 tinted !rounded-l-none" onClick={() => setReverse(!reverse())}>{ reverseSymbol() }</button>
         </div>
       </div>
-      <RepoList user="Szeweq" sortBy={sortBy} reverse={reverse} />
+      <RepoList sortBy={sortBy} reverse={reverse} />
     </main>
   )
 }
@@ -115,7 +113,7 @@ const App: Component = () => {
           Szeweq
         </h1>
         <div class="flex-grow" />
-        <a class="btn btn-sm" href="https://github.com/Szeweq">GitHub</a>
+        <a class="btn border-2 stroked" href="https://github.com/Szeweq">GitHub</a>
       </header>
       <div id="page" class="sheet-0">
         <Page />
