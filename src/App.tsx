@@ -94,7 +94,7 @@ const Page: Component = () => {
       <div class="flex flex-row justify-between items-center py-1 mb-2">
         <h1 class="text-2xl font-bold">My repositories</h1>
         <div class="flex">
-          <select class="select h-8 border stroked rounded-l" title="Sort by" onInput={(e) => setSortBy(e.currentTarget.value as SortKey)}>
+          <select class="select h-8 border-2 stroked rounded-l" title="Sort by" onInput={(e) => setSortBy(e.currentTarget.value as SortKey)}>
             <For each={Object.entries(sortKeys)}>{([key, value]) => (<option value={key}>{value}</option>)}</For>
           </select>
           <button class="btn h-8 tinted !rounded-l-none" onClick={() => setReverse(!reverse())}>{ reverseSymbol() }</button>
