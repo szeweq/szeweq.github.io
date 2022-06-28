@@ -113,6 +113,7 @@ const App: Component = () => {
           Szeweq
         </h1>
         <div class="flex-grow" />
+        <a class="btn border-2 stroked mr-1" href="https://droogoo.szeweq.xyz/">Droogoo</a>
         <a class="btn border-2 stroked" href="https://github.com/Szeweq">GitHub</a>
       </header>
       <div id="page" class="sheet-0">
